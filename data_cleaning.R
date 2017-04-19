@@ -1,6 +1,6 @@
-# Downloaded from https://data.baltimorecity.gov/Public-Safety/BPD-Part-1-Victim-Based-Crime-Data/wsfq-mvij
-# 2016-09-27 20:18:20 EDT
-# File downloaded as crime.csv
+# Downloaded from https://www.opendataphilly.org/dataset/crime-incidents
+# 2017-03-37
+# File downloaded as PPD_Crime_Incidents_2006-Present.csv
 
 library(dplyr)
 library(lubridate)
@@ -10,8 +10,8 @@ library(stringr)
 library(purrr)
 
 #crime1 <- read_csv("crime.csv")
-crime %>%
-  print(n=12,width=Inf)
+#crime %>%
+#  print(n=12,width=Inf)
 
 phl_crime<-read_csv("PPD_Crime_Incidents_2006-Present.csv")
 nrow(phl_crime) # 2,238,107 in total | 2,220,758 nonblank in Shape field
@@ -54,7 +54,8 @@ phl_crime$lng <- phl_crime$Shape %>%
 phl_crime %<>%
   select(-Dispatch_Time, -Shape) %>%
   filter(!is.na(lat)) %>%
-  filter(!is.na(lng))
+  filter(!is.na(lng)) %>%
+  filter()
 #2,220,753 nonblank, non-na in both lat and lng fields
 
 
@@ -67,4 +68,19 @@ phl_crime %<>%
 
 #min(phl_crime$Dispatch_Date) # 2006-01-01
 #max(phl_crime$Dispatch_Date) #2017-03-24
-saveRDS(phl_crime, "phl_crime.rds")
+saveRDS(phl_crime, "phl_crime.rds") #105.2 MB
+
+# Further down-size the dataset by selecting the crimes in 2016 and 2017
+phl_crime0 <- readRDS("phl_crime.rds") #nrow()=251378
+phl_crime0 %>%
+  print(n=12,width=Inf)
+phl_crime0 %<>%
+  filter(!is.na(General_Crime_Category)) # nrow()=2220094
+nrow(phl_crime0)
+phl_crime0 %<>%
+  filter(Dispatch_Date >="2016-01-01") # nrow()=199079
+saveRDS(phl_crime0, "phl_crime0.rds") #13.8 MB
+# table(phl_crime0$dispatch_year) #year2016->165618 records; year2017->33461
+# min(phl_crime0$Dispatch_Date) #"2016-01-01"
+# max(phl_crime0$Dispatch_Date) #"2017-03-24"
+ 

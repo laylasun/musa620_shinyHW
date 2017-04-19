@@ -1,18 +1,18 @@
-#shiny::runGitHub("seankross/Baltimore_Crime_Browser")
+#shiny::runGitHub("laylasun/musa620_shinyHW")
 library(shiny)
 library(shinydashboard)
 library(leaflet)
 
 dashboardPage(
   skin = "blue",
-  dashboardHeader(title = "Philadelphia Crime Browser", titleWidth = 250),
+  dashboardHeader(title = "Philadelphia Crime (2016-2017) Browser", titleWidth = 450),
   dashboardSidebar(
     width = 200,
     sidebarMenu(
       menuItem("Map of Philadelphia", tabName = "map", icon = icon("map")),
       menuItem("Graphs & Metrics", tabName = "graphs", icon = icon("signal", lib = "glyphicon")),
       menuItem("About", tabName = "about", icon = icon("question-circle")),
-      menuItem("Source Code", href = "http://github.com/seankross/Baltimore_Crime_Browser", icon = icon("github-alt"))
+      menuItem("Source Code", href = "https://github.com/laylasun/musa620_shinyHW", icon = icon("github-alt"))
     )
   ),
   dashboardBody(
@@ -27,8 +27,8 @@ dashboardPage(
                box(width = NULL,
                    dateRangeInput("date1", "Select dates to visualize:",
                                   start = "2017-01-01", end = "2017-01-31",
-                                  min = min(phl_crime$Dispatch_Date), max = max(phl_crime$Dispatch_Date)),
-                   submitButton("Submit")
+                                  min = min(phl_crime$Dispatch_Date), max = max(phl_crime$Dispatch_Date))
+                   #submitButton("Submit")
                ),
                box(width = NULL,
                    h4("Number of Crimes"),
@@ -56,15 +56,15 @@ dashboardPage(
                        box(width = NULL,
                            dateRangeInput("date2", "Select dates to visualize:",
                                           start = "2017-01-01", end = "2017-01-31",
-                                          min = min(phl_crime$Dispatch_Date), max = max(phl_crime$Dispatch_Date)),
-                           submitButton("Submit")
+                                          min = min(phl_crime$Dispatch_Date), max = max(phl_crime$Dispatch_Date))
+                           #submitButton("Submit")
                        )
                 ),
                 column(width = 6,
                        box(width = NULL,
-                           selectInput("weekday", "Select a weekday to visualize (weekday with the most crime as default):",
-                                       c("Tuesday", wd[wd!="Tuesday"])),
-                           submitButton("Submit")
+                           selectInput("weekday", "Select a weekday to visualize (weekday with the most crime is listed at the top):",
+                                       c("Tuesday", wd[wd!="Tuesday"]))
+                           #submitButton("Submit")
                        )
                 )
               )),

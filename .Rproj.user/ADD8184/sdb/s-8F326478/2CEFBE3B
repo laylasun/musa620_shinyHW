@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# Downloaded from https://www.opendataphilly.org/dataset/crime-incidents\n# 2017-03-37\n# File downloaded as PPD_Crime_Incidents_2006-Present.csv\n\nlibrary(dplyr)\nlibrary(lubridate)\nlibrary(readr)\nlibrary(magrittr)\nlibrary(stringr)\nlibrary(purrr)\n\n#crime1 <- read_csv(\"crime.csv\")\n#crime %>%\n#  print(n=12,width=Inf)\n\nphl_crime<-read_csv(\"PPD_Crime_Incidents_2006-Present.csv\")\nnrow(phl_crime) # 2,238,107 in total | 2,220,758 nonblank in Shape field\nphl_crime <-phl_crime[which(phl_crime$Shape!=''), ]\n\n# To view all the columns in the tibble table\nphl_crime %>%\n  print(n=12,width=Inf)\n\ncolnames(phl_crime)\ncolnames(phl_crime)[which(colnames(phl_crime) == \"Dispatch Date/Time\")] <- \"Dispatch_Date_Time\"\ncolnames(phl_crime)[which(colnames(phl_crime) == \"Dispatch Date\")] <- \"Dispatch_Date\"\ncolnames(phl_crime)[which(colnames(phl_crime) == \"Dispatch Time\")] <- \"Dispatch_Time\"\ncolnames(phl_crime)[which(colnames(phl_crime) == \"Location Block\")] <- \"Location_Block\"\ncolnames(phl_crime)[which(colnames(phl_crime) == \"General Crime Category\")] <- \"General_Crime_Category\"\ncolnames(phl_crime)[which(colnames(phl_crime) == \"Police Districts\")] <- \"Police_Districts\"\n\n# date & time format reference: https://www.stat.berkeley.edu/~s133/dates.html\nphl_crime %<>%\n  mutate(time=seconds_to_period(Dispatch_Time)) %>% # using lubridate: convert secs into HMS format\n  mutate(dispatch_year=format(Dispatch_Date,'%Y')) %>% # year e.g. 2015\n  mutate(dispatch_month=format(Dispatch_Date,'%B')) %>% # full month e.g. October\n  mutate(dispatch_weekday=format(Dispatch_Date,'%A')) # full weekdat e.g. Sunday\n\n#crime <- crime %>%\n#crime %<>%\n # mutate(CrimeDate = mdy(CrimeDate)) %>%\n # mutate(CrimeTime = hms(CrimeTime)) %>%\n # mutate(Inside_Outside = recode(Inside_Outside, \"I\" = \"Inside\", \n #                                \"O\" = \"Outside\"))\n\n#x<-\"POINT (-75.130477 40.036389)\" \n#str_extract_all(x,\"-?[0-9]{2}\\\\.[0-9]+\") -->[[1]] [1] \"-75.130477\" \"40.036389\" \n\nphl_crime$lat <- phl_crime$Shape %>%\n  map_chr(function(x){str_extract_all(x, \"-?[0-9]{2}\\\\.[0-9]+\")[[1]][2]})\nphl_crime$lng <- phl_crime$Shape %>%\n  map_chr(function(x){str_extract_all(x, \"-?[0-9]{2}\\\\.[0-9]+\")[[1]][1]})\n\nphl_crime %<>%\n  select(-Dispatch_Time, -Shape) %>%\n  filter(!is.na(lat)) %>%\n  filter(!is.na(lng)) %>%\n  filter()\n#2,220,753 nonblank, non-na in both lat and lng fields\n\n\nphl_crime %<>%\n  filter(!is.na(Dispatch_Date)) %>%\n  mutate(popdate = paste(\"Date:\", Dispatch_Date)) %>%\n  mutate(poploc = paste(\"Location:\", Location_Block)) %>%\n  mutate(popcrimecat = paste(\"Crime:\", General_Crime_Category)) %>%\n  mutate(content = paste(popdate, poploc, popcrimecat, sep = \"<br/>\"))\n\n#min(phl_crime$Dispatch_Date) # 2006-01-01\n#max(phl_crime$Dispatch_Date) #2017-03-24\nsaveRDS(phl_crime, \"phl_crime.rds\") #105.2 MB\n\n# Further down-size the dataset by selecting the crimes in 2016 and 2017\nphl_crime0 <- readRDS(\"phl_crime.rds\") #nrow()=251378\nphl_crime0 %>%\n  print(n=12,width=Inf)\nphl_crime0 %<>%\n  filter(!is.na(General_Crime_Category)) # nrow()=2220094\nnrow(phl_crime0)\nphl_crime0 %<>%\n  filter(Dispatch_Date >=\"2016-01-01\") # nrow()=199079\nsaveRDS(phl_crime0, \"phl_crime0.rds\") #13.8 MB\n# table(phl_crime0$dispatch_year) #year2016->165618 records; year2017->33461\n# min(phl_crime0$Dispatch_Date) #\"2016-01-01\"\n# max(phl_crime0$Dispatch_Date) #\"2017-03-24\"\n ",
+    "created" : 1492613122388.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3891002938",
+    "id" : "2CEFBE3B",
+    "lastKnownWriteTime" : 1492613218,
+    "last_content_update" : 1492613217638,
+    "path" : "D:/620/hw_shiny/musa620_shinyHW/data_cleaning.R",
+    "project_path" : "data_cleaning.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

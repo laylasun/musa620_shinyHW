@@ -1,4 +1,4 @@
-# Philly Crime Browser
+# Philly Crime 2016-2017 Browser
 
 This application is the homework for MUSA 620 and is adapted from the Baltimore
 Crime Brower (in-class example) which shows an example of a dashboard that can 
@@ -11,7 +11,9 @@ The dashboard includes the following features:
 2. Widgets that provide aggregate summaries of crime events.
 3. A calendar that allows the user to filter crime events by date. This calendar
    is consistent throughout the app.
-4. Visualizations of crime over time and by type of crime.
+4. Visualizations of crime over time and by type of crime for selected weekday.
+   Minor problem with the weekday-selection: the dropdown memu will always 
+   jump back to the updated weekday (the day with the most crimes)
 
 The following R Packages were used to prepare the data for this app:
 

@@ -43,7 +43,7 @@ shinyServer(function(input, output, session) {
     input$date1
     
     updateDateRangeInput(session, "date2",
-                         "Select dates to visualize.",
+                         "Select dates to visualize:",
                          start = input$date1[1],
                          end = input$date1[2],
                          min = min(phl_crime$Dispatch_Date), max = max(phl_crime$Dispatch_Date))
@@ -53,7 +53,7 @@ shinyServer(function(input, output, session) {
     input$date2
     
     updateDateRangeInput(session, "date1",
-                         "Select dates to visualize.",
+                         "Select dates to visualize:",
                          start = input$date2[1],
                          end = input$date2[2],
                          min = min(phl_crime$Dispatch_Date), max = max(phl_crime$Dispatch_Date))
@@ -63,9 +63,12 @@ shinyServer(function(input, output, session) {
     input$weekday
     
     x <- names(tail(sort(table(filtered_crime()$dispatch_weekday)), 1))
+    
+    y<-ifelse(x==input$weekday,x,input$weekday)
     x_desc <- paste("Day with most crime:",x)
     updateSelectInput(session, "weekday",
-                      choices = c(x, wd[wd!=x])
+                      choices = c(x, wd[wd!=x]),
+                      selected = y
     )
   })
   

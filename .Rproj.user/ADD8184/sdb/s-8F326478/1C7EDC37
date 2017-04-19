@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#shiny::runGitHub(\"laylasun/musa620_shinyHW\")\nlibrary(shiny)\nlibrary(shinydashboard)\nlibrary(leaflet)\n\ndashboardPage(\n  skin = \"blue\",\n  dashboardHeader(title = \"Philadelphia Crime (2016-2017) Browser\", titleWidth = 450),\n  dashboardSidebar(\n    width = 200,\n    sidebarMenu(\n      menuItem(\"Map of Philadelphia\", tabName = \"map\", icon = icon(\"map\")),\n      menuItem(\"Graphs & Metrics\", tabName = \"graphs\", icon = icon(\"signal\", lib = \"glyphicon\")),\n      menuItem(\"About\", tabName = \"about\", icon = icon(\"question-circle\")),\n      menuItem(\"Source Code\", href = \"https://github.com/laylasun/musa620_shinyHW\", icon = icon(\"github-alt\"))\n    )\n  ),\n  dashboardBody(\n    tabItems(\n      tabItem(tabName = \"map\",\n      fluidRow(\n        column(width = 8,\n               box(width = NULL,\n                   leafletOutput(\"crime_map\", height = 500))\n        ),\n        column(width = 4,\n               box(width = NULL,\n                   dateRangeInput(\"date1\", \"Select dates to visualize:\",\n                                  start = \"2017-01-01\", end = \"2017-01-31\",\n                                  min = min(phl_crime$Dispatch_Date), max = max(phl_crime$Dispatch_Date))\n                   #submitButton(\"Submit\")\n               ),\n               box(width = NULL,\n                   h4(\"Number of Crimes\"),\n                   h5(textOutput(\"total_crimes\"))),\n               box(width = NULL,\n                   h4(\"Most Common Crime\"),\n                   h5(textOutput(\"common_crime\"))),\n               box(width = NULL,\n                   h4(\"Day of the Week with the Most Crime\"),\n                   h5(textOutput(\"weekday_crime\")))\n        )\n      )\n      ),\n      tabItem(tabName = \"graphs\",\n              fluidRow(\n                column(width = 6,\n                       box(width = NULL,\n                           plotOutput(\"daily_plot\"))),\n                column(width = 6,\n                       box(width = NULL,\n                           plotOutput(\"desc_plot\")))\n              ),\n              fluidRow(\n                column(width = 6,\n                       box(width = NULL,\n                           dateRangeInput(\"date2\", \"Select dates to visualize:\",\n                                          start = \"2017-01-01\", end = \"2017-01-31\",\n                                          min = min(phl_crime$Dispatch_Date), max = max(phl_crime$Dispatch_Date))\n                           #submitButton(\"Submit\")\n                       )\n                ),\n                column(width = 6,\n                       box(width = NULL,\n                           selectInput(\"weekday\", \"Select a weekday to visualize (weekday with the most crime is listed at the top):\",\n                                       c(\"Tuesday\", wd[wd!=\"Tuesday\"]))\n                           #submitButton(\"Submit\")\n                       )\n                )\n              )),\n      tabItem(tabName = \"about\",\n              fluidRow(\n                column(width = 10,\n                       box(width = NULL,\n                           includeMarkdown(\"about.md\")))\n              )\n      )\n    )\n  )\n)",
+    "created" : 1492613025908.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3950066693",
+    "id" : "1C7EDC37",
+    "lastKnownWriteTime" : 1492613082,
+    "last_content_update" : 1492613080878,
+    "path" : "D:/620/hw_shiny/musa620_shinyHW/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
