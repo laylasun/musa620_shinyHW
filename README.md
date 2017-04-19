@@ -1,5 +1,5 @@
 # Philly Crime 2016-2017 Browser
-# Homework for MUSA620 Week-Shiny
+## Homework for MUSA620 Week-Shiny
 ## Install
 
 ```
