@@ -11,6 +11,7 @@ install.packages("shiny")
 # install.packages("lubridate")
 
 shiny::runGitHub("laylasun/musa620_shinyHW")
+published on: https://laylasun.shinyapps.io/Philly_Crime_Browser-master/
 ```
 
 This application is an adapted example (https://github.com/seankross/Baltimore_Crime_Browser)
